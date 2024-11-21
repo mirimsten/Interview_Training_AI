@@ -18,7 +18,7 @@ async function generateInterviewQuestions(jobTitle) {
   const prompt = `
   You are an experienced interviewer for the position of ${jobTitle}.
   Please provide me with 5 challenging and insightful interview questions for a candidate applying for this role. 
-  Format your response as a numbered list.
+  Format your response as a numbered list
   `;
 
   try {
