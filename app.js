@@ -12,7 +12,7 @@ const port = 3001;
 app.use(express.json());
 
 async function generateInterviewQuestions(jobTitle) {
-  const genAI = new GoogleGenerativeAI(process.env.GAMINI_API_KEY);
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `
@@ -53,7 +53,7 @@ app.post('/getFeedback', async (req, res) => {
 });
 
 async function generateFeedback(prompt) {
-    const genAI = new GoogleGenerativeAI(process.env.GAMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     try {
