@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const questionsController = require("./server/controllers/questionsController")
 //const { GoogleAIFileManager } = require("@google/generative-ai/server");
@@ -10,6 +11,7 @@ dotenv.config();
 const app = express();
 const port = 3001;
 
+app.use(cors());
 app.use(express.json());
 
 async function generateInterviewQuestions(jobTitle) {
