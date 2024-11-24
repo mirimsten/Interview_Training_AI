@@ -2,6 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const dotenv = require('dotenv');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const questionsController = require("./server/controllers/questionsController")
 //const { GoogleAIFileManager } = require("@google/generative-ai/server");
 
 dotenv.config();
@@ -49,6 +50,18 @@ app.post('/getFeedback', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to get feedback' });
+    }
+});
+
+//app.use("/questions", questionsRout)
+app.post('/questions', async (req, res) => {
+    try {
+        const newQuestion = await questionsController.createQuestion();
+        if (newQuestion) {
+            res.status(200).json(newQuestion);
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add category' });
     }
 });
 
