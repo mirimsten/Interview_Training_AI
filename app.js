@@ -3,7 +3,8 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const questionsController = require("./server/controllers/questionsController")
+const questionsController = require("./server/controllers/questionsController");
+const { log } = require('console');
 //const { GoogleAIFileManager } = require("@google/generative-ai/server");
 
 dotenv.config();
@@ -15,23 +16,33 @@ app.use(cors());
 app.use(express.json());
 
 async function generateInterviewQuestions(jobTitle) {
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = `
-  You are an experienced interviewer for the position of ${jobTitle}.
-  Please provide me with 5 challenging and insightful interview questions for a candidate applying for this role. 
-  Format your response as a numbered list
+    const prompt = `
+  אתה מראיין מנוסה לתפקיד של ${jobTitle}.
+    ספק לי 5 שאלות ראיון בעברית מאתגרות ומלאות תובנות עבור מועמד המתמודד על תפקיד זה אל תוסיף שום מילים שאנן קשורות לתוכן השאלות  
+  עצב את התגובה שלך כרשימה ממוספרת
   `;
 
-  try {
-      const result = await model.generateContent(prompt);
-      return result.response.text().split('\n'); // מחזיר רשימה של שאלות
-  } catch (error) {
-      console.error('Error generating questions:', error);
-      return ['Error generating questions'];
-  }
+    try {
+        const result = await model.generateContent(prompt);
+        let questionsList = result.response.text().split('\n');  // חיתוך התשובה לשורות
+
+        // סינון תאים ריקים ומחיקת רווחים מיותרים
+        questionsList = questionsList
+            .map(question => question.trim())  // מסיר רווחים מיותרים בתחילת ובסוף כל שאלה
+            .filter(question => question !== '');  // מסנן שאלות ריקות
+
+        console.log(`questionsList: ${questionsList}`);
+        return questionsList;  // מחזיר רשימה של שאלות מסודרות
+
+    } catch (error) {
+        console.error('Error generating questions:', error);
+        return ['Error generating questions'];  // במקרה של שגיאה
+    }
 }
+
 
 app.post('/getQuestions', async (req, res) => {
     const { jobTitle } = req.body;
