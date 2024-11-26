@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css'
 function App() {
@@ -10,23 +10,20 @@ function App() {
   const [allFeedbacks, setAllFeedbacks] = useState([]); // New state to store all individual feedbacks
   const [loading, setLoading] = useState(false); // Loading state
   const [showFinalFeedback, setShowFinalFeedback] = useState(false);
-  const jobOptions = [
-    'Full Stack Developer',
-    'Frontend Developer',
-    'Backend Developer',
-    'Mobile Developer',
-    'DevOps Engineer',
-    'Data Scientist',
-    'Machine Learning Engineer',
-    'Cybersecurity Specialist',
-    'Cloud Engineer',
-    'QA Automation Engineer',
-    'Embedded Software Engineer',
-    'Game Developer',
-    'Blockchain Developer',
-    'Product Manager',
-    'UI/UX Designer',
-  ];
+  const [jobOptions, setJobOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchJobTitles = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/getJobTitles');
+        setJobOptions(response.data.jobTitles);
+      } catch (error) {
+        console.error("Error fetching job titles:", error);
+      }
+    };
+
+    fetchJobTitles();
+  }, []);
 
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();

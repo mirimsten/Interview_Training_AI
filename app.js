@@ -5,9 +5,12 @@ const cors = require('cors');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const questionsController = require("./server/controllers/questionsController");
 const { log } = require('console');
+const db = require('./server/DB');
+
 //const { GoogleAIFileManager } = require("@google/generative-ai/server");
 
 dotenv.config();
+//console.log(process.env.DB_PASSWORD);
 
 const app = express();
 const port = 3001;
@@ -66,17 +69,27 @@ app.post('/getFeedback', async (req, res) => {
     }
 });
 
-//app.use("/questions", questionsRout)
-app.post('/questions', async (req, res) => {
+app.get('/getJobTitles', async (req, res) => {
     try {
-        const newQuestion = await questionsController.createQuestion();
-        if (newQuestion) {
-            res.status(200).json(newQuestion);
-        }
+      const [rows] = await db.execute('SELECT skill_name FROM skills');
+      res.json({ jobTitles: rows.map(row => row.skill_name) });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to add category' });
+      console.error("Error fetching job titles:", error);
+      res.status(500).json({ error: "Failed to fetch skill_name" });
     }
-});
+  });
+
+//app.use("/questions", questionsRout)
+// app.post('/questions', async (req, res) => {
+//     try {
+//         const newQuestion = await questionsController.createQuestion();
+//         if (newQuestion) {
+//             res.status(200).json(newQuestion);
+//         }
+//     } catch (error) {
+//         res.status(500).json({ error: 'Failed to add category' });
+//     }
+// });
 
 async function generateFeedback(prompt) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
