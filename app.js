@@ -6,6 +6,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const questionsController = require("./server/controllers/questionsController");
 const { log } = require('console');
 const db = require('./server/DB');
+const bcrypt = require('bcrypt');
 
 //const { GoogleAIFileManager } = require("@google/generative-ai/server");
 
@@ -78,19 +79,58 @@ app.get('/getJobTitles', async (req, res) => {
       res.status(500).json({ error: "Failed to fetch skill_name" });
     }
   });
-
-//app.use("/questions", questionsRout)
-// app.post('/questions', async (req, res) => {
-//     try {
-//         const newQuestion = await questionsController.createQuestion();
-//         if (newQuestion) {
-//             res.status(200).json(newQuestion);
-//         }
-//     } catch (error) {
-//         res.status(500).json({ error: 'Failed to add category' });
-//     }
-// });
-
+  
+  app.post('/signup', async (req, res) => {
+    const { username, email, password } = req.body;
+  
+    if (!username || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+  
+    try {
+      // הצפנת הסיסמה
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      console.log('Hashed Password:', hashedPassword);
+  
+      // שמירת המשתמש בטבלת users
+      const userQuery = 'INSERT INTO users (username, email) VALUES (?, ?)';
+      db.query(userQuery, [username, email], (err, result) => {
+        if (err) {
+          console.log(yyyyyyy);
+          console.error('Error saving user:', err.message);
+          return res.status(500).json({ error: 'Failed to save user.' });
+        }
+        console.log(yyyyyyy);
+        // הדפסת תוצאה עם תיאור
+        console.log('User query result:', result);
+  
+        if (result && result.insertId) {
+          const userId = result.insertId; // ID שנוצר אוטומטית למשתמש החדש
+          console.log('Generated User ID:', userId);
+  
+          // שמירת הסיסמה בטבלת passwords
+          const passwordQuery = 'INSERT INTO passwords (user_id, password_hash) VALUES (?, ?)';
+          db.query(passwordQuery, [userId, hashedPassword], (err) => {
+            if (err) {
+              console.error('Error saving password:', err.message);
+              return res.status(500).json({ error: 'Failed to save password.' });
+            }
+  
+            console.log('Password saved successfully!');
+            res.status(201).json({ message: 'User registered successfully!' });
+          });
+        } else {
+          console.error('No user ID returned from user insert.');
+          res.status(500).json({ error: 'Failed to retrieve user ID.' });
+        }
+      });
+    } catch (error) {
+      console.error('Error:', error.message);
+      res.status(500).json({ error: 'Internal server error.' });
+    }
+  });
+  
 async function generateFeedback(prompt) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
