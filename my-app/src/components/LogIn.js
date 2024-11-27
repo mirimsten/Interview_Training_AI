@@ -1,16 +1,44 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // לוגיקה להתחברות (ניתן להוסיף בקשה לשרת כאן)
-    onLogin();
-    navigate('/home');
+
+    try {
+      // שליחת הנתונים לשרת
+      const response = await axios.post('http://localhost:3001/users/login', {
+        email,
+        password,
+      });
+
+      // הנתונים מהשרת כבר זמינים ב-response.data
+      const data = response.data;
+
+      // אם התחברות הצליחה
+      if (response.status === 200) {
+        alert('התחברת בהצלחה!');
+        navigate('/home'); // נווט לדף הבית או הדף הרצוי
+      } else {
+        alert(`שגיאה בהתחברות: ${data.error}`);
+      }
+    } 
+    catch (error) {
+      // טיפול בשגיאות
+      console.error('Error:', error);
+
+      // בדיקת שגיאה מהשרת
+      if (error.response) {
+        alert(`שגיאת שרת: ${error.response.data.error}`);
+      } else {
+        alert('אירעה שגיאה בשרת.');
+      }
+    }
   };
 
   return (

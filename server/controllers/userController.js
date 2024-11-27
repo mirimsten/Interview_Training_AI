@@ -1,3 +1,4 @@
+const { default: Login } = require('../../my-app/src/components/LogIn');
 const model = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // קביעת מספר סיבובי ההצפנה
@@ -10,6 +11,31 @@ async function CheckIfExist(email) {
         return user.length > 0 ? user[0] : null; // החזר null אם המשתמש לא נמצא
     } catch (err) {
         throw new Error("Error in CheckIfExist: " + err.message);
+    }
+}
+async function logIn(email,password) {
+    try {
+        const user = await CheckIfExist(email);
+        console.log("log in controller" + JSON.stringify(user));
+        if (user) { // אם מצא כזה לקוח
+            const userID = user.userID;
+            const passwordRecord = await model.getPasswordByUserID(userID);
+            if (passwordRecord) {
+                const match = await bcrypt.compare(body.password, passwordRecord[0].password);
+                if (match) {
+                    console.log("Password matches");
+                    return user;
+                } else {
+                    throw new Error("Incorrect password");
+                }
+            } else {
+                throw new Error("Incorrect password");
+            }
+        } else {
+            throw new Error("User does not exist");
+        }
+    } catch (err) {
+        throw new Error("Error in logIn: " + err.message);
     }
 }
 
@@ -38,4 +64,4 @@ async function createUser( username, email, password ) {
         throw new Error("Error in createUser: " + err.message);
     }
 }
-module.exports={createUser,CheckIfExist};
+module.exports={createUser,CheckIfExist,logIn};

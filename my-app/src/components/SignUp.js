@@ -76,6 +76,9 @@ const SignUp = () => {
           />
         </div>
         <button type="submit">הרשם</button>
+        <p>
+        כבר קיים אצלנו? <a href="/login">התחבר</a>
+      </p>
       </form>
     </div>
   );
