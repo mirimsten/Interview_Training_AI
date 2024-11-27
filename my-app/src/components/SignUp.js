@@ -11,7 +11,7 @@ const SignUp = () => {
 
     try {
       // שליחת הנתונים לשרת
-      const response = await axios.post('http://localhost:3001/signup', {
+      const response = await axios.post('http://localhost:3001/users/signup', {
         username,
         email,
         password,
