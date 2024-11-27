@@ -11,18 +11,17 @@ const SignUp = () => {
 
     try {
       // שליחת הנתונים לשרת
-      const response = await axios.post('http://localhost:3001/signup', {username, email, password});
-    //   const response = await fetch('http://localhost:3001/signup', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({ username, email, password }),
-    //   });
+      const response = await axios.post('http://localhost:3001/signup', {
+        username,
+        email,
+        password,
+      });
 
-      const data = await response.json();
+      // הנתונים מהשרת כבר זמינים ב-response.data
+      const data = response.data;
 
-      if (response.ok) {
+      // בדיקת סטטוס התגובה (למרות ש-axios זורק שגיאה אם הסטטוס אינו 2xx)
+      if (response.status === 201) {
         alert('הרשמה בוצעה בהצלחה!');
         setUserName('');
         setEmail('');
@@ -31,10 +30,18 @@ const SignUp = () => {
         alert(`שגיאה בהרשמה: ${data.error}`);
       }
     } catch (error) {
+      // טיפול בשגיאות
       console.error('Error:', error);
-      alert('אירעה שגיאה בשרת.');
+
+      // בדיקת שגיאה מהשרת
+      if (error.response) {
+        alert(`שגיאת שרת: ${error.response.data.error}`);
+      } else {
+        alert('אירעה שגיאה בשרת.');
+      }
     }
   };
+
 
 
   return (
