@@ -4,17 +4,7 @@ const controller = require("../controllers/questionsController");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const dotenv = require('dotenv');
 dotenv.config();
-
-router.get('/getQuestions', async (req, res) => {
-    try {
-        const newQuestion = await controller.createQuestion();
-        if (newQuestion) {
-            res.status(200).json(newQuestion);
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to add category' });
-    }
-});
+const GEMINI_API_KEY = 'AIzaSyAvGug2EG0V4vqitmlTEtBmoiqNKyva0w0';
 
 router.post('/getQuestions', async (req, res) => {
     const { username, jobTitle } = req.body;
@@ -27,10 +17,23 @@ router.post('/getQuestions', async (req, res) => {
     }
 });
 
+router.get('/getQuestions', async (req, res) => {
+    try {
+        const body=req.body;
+       
+        const newQuestion = await controller.createQuestion();
+        if (newQuestion) {
+            res.status(200).json(newQuestion);
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add category' });
+    }
+});
+
 async function generateInterviewQuestions(jobTitle) {
     console.log(process.env);
-    console.log("API Key:", process.env.GEMINI_API_KEY);
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    console.log("API Key:", GEMINI_API_KEY);
+    const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `

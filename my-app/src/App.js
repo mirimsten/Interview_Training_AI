@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './components/LogIn';
-import SignUp from './components/SignUp';
-import Home from './components/Home';
+import Login from '../src/pages/LogIn';
+import SignUp from '../src/pages/SignUp';
+import Home from '../src/pages/Home';
 
 // רכיב App שמנהל ניתובים
 function App() {

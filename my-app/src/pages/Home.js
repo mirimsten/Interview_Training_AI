@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 //import { Navigate, BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
+import NavBar from '../components/NavBar';
 import '../App.css'
 //import { createInterview } from '../../../server/models/interviewModel';
 //import { getUserByEmail } from '../../../server/models/userModel';
@@ -102,8 +103,8 @@ function Home() {
     setLoading(true);
     try {
       const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
-      const userId = JSON.stringify(user.id);
-
+      const userId = JSON.stringify(user.user_id);
+      console.log("intreview userID" + userId)
       const response = await axios.post('http://localhost:3001/interviews/createInterview', {
         userId,
         jobId,
@@ -187,6 +188,7 @@ function Home() {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+        <NavBar />
       <h1>מערכת הכנה לראיונות עבודה</h1>
       {/* Only show job selection if no questions are loaded */}
       {!questions.length && (
