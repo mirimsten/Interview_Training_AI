@@ -10,6 +10,7 @@ async function createInterview(user_id, skill_id, interview_date, feedback ) {
             console.error('Failed to insert interview into interviews table.');
             throw new Error('Failed to insert interview.');
         }
+        return resultInterview.insertId;
 
     } catch (err) {
         console.error('Error in createInterview function:', err.message);

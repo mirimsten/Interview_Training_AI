@@ -57,4 +57,23 @@ async function generateInterviewQuestions(jobTitle) {
     }
 }
 
+router.post('/createQuestion', async (req, res) => {
+    const { jobId,userId,interviewId,question } = req.body;
+    try{
+        const questionId = await controller.createQuestion(jobId, userId, interviewId, question);
+        if (!questionId) {
+            console.error('Failed to retrieve question ID.');
+            return res.status(500).json({ error: 'Failed to save question.' });
+        }
+
+        console.log("Question created successfully with ID:", questionId);
+        return res.status(201).json({ message: 'Question created successfully', questionId });
+
+    }
+    catch (error) {
+        console.error('Error creating question:', error);
+        return ['Error creating question'];  // במקרה של שגיאה
+    }
+})
+
 module.exports = router;

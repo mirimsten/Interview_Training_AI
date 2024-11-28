@@ -4,8 +4,8 @@ const controller = require("../controllers/interviewController");
 
 // create interview
 router.post('/createInterview', async (req, res) => {
-    const { user_id, skill_id, interview_date, feedback } = req.body;
-    console.log(user_id);
+    const { userId, jobId, interview_date, feedback } = req.body;
+    console.log(userId);
 
     // if (!user_id || !skill_id || !interview_date, !feedback) {
     //     return res.status(400).json({ error: 'All fields are required.' });
@@ -13,15 +13,15 @@ router.post('/createInterview', async (req, res) => {
 
     try {
         // קריאה לפונקציה ליצירת משתמש
-        const id = await controller.createInterview(user_id, skill_id, interview_date, feedback);
+        const interviewId = await controller.createInterview(userId, jobId, interview_date, feedback);
 
-        if (!id) {
-            console.error('Failed to retrieve user ID.');
+        if (!interviewId) {
+            console.error('Failed to retrieve Interview ID.');
             return res.status(500).json({ error: 'Failed to save user.' });
         }
 
-        console.log("interview created successfully with ID:", id);
-        return res.status(201).json({ message: 'interview created successfully!' });
+        console.log("interview created successfully with ID:", interviewId);
+        return res.status(201).json({ message: 'Interview created successfully', interviewId });
 
     } 
     catch (err) {

@@ -61,6 +61,7 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error.' });
     }
 });
+
 router.get('/getUserByEmail', async (req, res) => {
     const { email } = req.query;
     console.log("המייל שנשלח:"+ email);

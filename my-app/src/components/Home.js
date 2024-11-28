@@ -6,9 +6,9 @@ import '../App.css'
 //import { getUserByEmail } from '../../../server/models/userModel';
 function Home() {
   const [user, setUser] = useState(null); // State to store user details
-  //const [userId, setUserId] = useState('');
+  const [interviewId, setInterviewId] = useState('');
   const [jobTitle, setJobTitle] = useState('');
-  const[jobId, setJobId] = useState('');
+  const [jobId, setJobId] = useState('');
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -18,17 +18,17 @@ function Home() {
   const [showFinalFeedback, setShowFinalFeedback] = useState(false);
   const [jobOptions, setJobOptions] = useState([]);
 
-// const user = JSON.parse(localStorage.getItem('user'));
-// const userEmail = user ? user.email : ''; // שליפה פשוטה של המייל
-// console.log("User email from localStorage:", userEmail);
+  // const user = JSON.parse(localStorage.getItem('user'));
+  // const userEmail = user ? user.email : ''; // שליפה פשוטה של המייל
+  // console.log("User email from localStorage:", userEmail);
 
   // Fetch user details from localStorage
   useEffect(() => {
     const savedUser = JSON.parse(localStorage.getItem('user'));
     if (savedUser) {
-         setUser(savedUser);
-         console.log("המשתמש שנשמר:" + JSON.stringify(savedUser));
-       }
+      setUser(savedUser);
+      console.log("המשתמש שנשמר:" + JSON.stringify(savedUser));
+    }
 
   }, []);
 
@@ -37,7 +37,8 @@ function Home() {
       try {
         const response = await axios.get('http://localhost:3001/getJobTitles');
         setJobOptions(response.data.jobTitles.map(job => job.skill_name));
-        setJobId(response.data.jobTitles.map(job => job.skill_id));
+        //setJobId(response.data.jobTitles.map(job => job.skill_id));
+        setJobId(response.data.jobTitles[0].skill_id);
       } catch (error) {
         console.error("Error fetching job titles:", error);
       }
@@ -46,50 +47,80 @@ function Home() {
     fetchJobTitles();
   }, []);
 
+  useEffect(() => {
+    if (questions.length > 0 && interviewId) {
+      createQuestion(); // קריאה לפונקציה רק כאשר יש ערכים ב-questions
+    }
+  }, [questions, interviewId]);
 
-// const getUserByEmail = async (e) =>{
-//   e.preventDefault();
-//     setLoading(true);
-//     //const user_email = user.email;
-//     const user_email = JSON.stringify(user.email);
-//     let cleanedEmail = user_email.replace(/^"|"$/g, '');
-//      console.log(cleanedEmail);
-//     try {
-//       const response = await axios.get('http://localhost:3001/users/getUserByEmail', {
-//         params: { email: cleanedEmail }, // השתמש ב-"params" במקום ב-"body" עבור קריאות GET
-//       });
-//       const userId = response.data.user_id; // הנחה שהתוצאה היא מערך
-//       console.log("vhh"+ userId);
-//       return userId;
-//     } 
-//     catch(error){
-//       console.error("Error fetching questions:", error);
-//     }finally {
-//       setLoading(false);
-//     }
-// };
+  const createQuestion = async () => {
+    setLoading(true);
+    const questionsList = questions;
+    const userId = JSON.stringify(user.id);
+    try {
+      for (const question of questionsList) {
+        const response = await axios.post('http://localhost:3001/questions/createQuestion', {
+          jobId,
+          userId,
+          interviewId,
+          question // השאלה הנוכחית
+        });
 
-const createInterview = async (e) =>{
-  e.preventDefault();
+      }
+    }
+    catch (error) {
+      console.error("Error creating Question:", error);
+    } finally {
+      setLoading(false); // לעצור את ההטענה בכל מקרה
+    }
+  }
+
+  const createAnswer = async (userAnswer) => {
     setLoading(true);
     try {
-      const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
       const userId = JSON.stringify(user.id);
-      console.log("Current date being sent:", currentDate);
-      console.log("User ID being sent:", userId);
 
-      const response = await axios.post('http://localhost:3001/interviews/createInterview', {
+      const response = await axios.post('http://localhost:3001/answers/createAnswer', {
         userId,
-        jobId,
-        interview_date: currentDate,
+
+        userAnswer
       });
-      console.log("Response:", response.data);
+      const newInterviewId = response.data.interviewId;
+      console.log('Created interview ID:', newInterviewId);
+      setInterviewId(newInterviewId);
+      return newInterviewId;
+
     } catch (error) {
       console.error("Error creating interview:", error);
     } finally {
       setLoading(false); // לעצור את ההטענה בכל מקרה
     }
-}
+  }
+
+  const createInterview = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const userId = JSON.stringify(user.id);
+
+      const response = await axios.post('http://localhost:3001/interviews/createInterview', {
+        userId,
+        jobId,
+        interview_date: currentDate,
+        feedback: null
+      });
+      const newInterviewId = response.data.interviewId;
+      console.log('Created interview ID:', newInterviewId);
+      setInterviewId(newInterviewId);
+      return newInterviewId;
+
+    } catch (error) {
+      console.error("Error creating interview:", error);
+    } finally {
+      setLoading(false); // לעצור את ההטענה בכל מקרה
+    }
+  }
 
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
@@ -97,14 +128,13 @@ const createInterview = async (e) =>{
     try {
       const response = await axios.post('http://localhost:3001/questions/getQuestions', { jobTitle });
       setQuestions(response.data.questions);
-      //setUserId(getUserByEmail(e));
-      //console.log("userId is!!:", userId);
-      const newInterview = createInterview(e);
-      //לשלוח פה את השאלות לטבלת השאלות אבל צריך id של המשתמש ושל הראיון
+      console.log("Response from API:", response.data.questions);
+      console.log("Questions list:", questions);
+      const newInterviewId = await createInterview(e);
       setCurrentQuestionIndex(0);
       setUserAnswers([]);
       setFeedback('');
-      setAllFeedbacks([]); // Reset all feedback when new questions are loaded
+      setAllFeedbacks([]);
     } catch (error) {
       console.error("Error fetching questions:", error);
     } finally {
@@ -116,6 +146,7 @@ const createInterview = async (e) =>{
     e.preventDefault();
     setLoading(true);
     const userAnswer = e.target.answer.value;
+    createAnswer(userAnswer);
     const prompt = `השאלה: ${questions[currentQuestionIndex]}. התשובה שלך: ${userAnswer}. תן את חוות דעתך על התשובה האם היא נכונה ומה צריך לשפר בה תשתדל שתשובתך תהיה באורך 5 שורות מקסימום`;
     try {
       const response = await axios.post('http://localhost:3001/getFeedback', { prompt });

@@ -50,60 +50,7 @@ app.get('/getJobTitles', async (req, res) => {
     }
 });
 
-// app.post('/signup', async (req, res) => {
-//     const { username, email, password } = req.body;
 
-//     if (!username || !email || !password) {
-//         return res.status(400).json({ error: 'All fields are required.' });
-//     }
-
-//     try {
-//         // הצפנת הסיסמה
-//         const hashedPassword = await bcrypt.hash(password, 10);
-        
-//         // קריאה לפונקציה ליצירת משתמש
-//         const id = await createUser(username, email, hashedPassword);
-        
-//         if (!id) {
-//             console.error('Failed to retrieve user ID.');
-//             return res.status(500).json({ error: 'Failed to save user.' });
-//         }
-
-//         console.log("User created successfully with ID:", id);
-//         return res.status(201).json({ message: 'User registered successfully!' });
-
-//     } catch (err) {
-//         console.error('Error during user signup:', err.message);
-//         return res.status(500).json({ error: 'Internal server error.' });
-//     }
-// });
-
-// async function createUser(userName, email, cryptedPassword) {
-//     try {
-//         // הכנסת משתמש לטבלת users
-//         const sqlUser = `INSERT INTO users (username, email) VALUES (?, ?)`;
-//         const [resultUser] = await db.query(sqlUser, [userName, email]);
-        
-//         if (!resultUser.insertId) {
-//             console.error('Failed to insert user into users table.');
-//             throw new Error('Failed to insert user.');
-//         }
-        
-//         const userID = resultUser.insertId;
-//         console.log("Generated user ID:", userID);
-
-//         // הכנסת הסיסמה לטבלת passwords
-//         const sqlPassword = `INSERT INTO passwords (user_id, password_hash) VALUES (?, ?)`;
-//         await db.query(sqlPassword, [userID, cryptedPassword]);
-//         console.log("Password inserted successfully for user ID:", userID);
-
-//         return userID;
-
-//     } catch (err) {
-//         console.error('Error in createUser function:', err.message);
-//         throw err;
-//     }
-// }
 
 async function generateFeedback(prompt) {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
