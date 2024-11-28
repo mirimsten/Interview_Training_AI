@@ -20,11 +20,13 @@ app.use(express.json());
 const userRoute=require("./routes/userRoute")
 const questionRoute=require("./routes/questionsRoute")
 const interviewRoute = require("./routes/interviewRout")
-
-
+const answerRoute=require("./routes/answerRoute")
+const feedbackRoute=require("./routes/feedbackRoute")
 app.use('/users',userRoute);
 app.use('/questions', questionRoute);
 app.use('/interviews', interviewRoute);
+app.use('/feedback', feedbackRoute);
+app.use('/answers', answerRoute);
 
 
 

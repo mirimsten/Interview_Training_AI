@@ -33,6 +33,7 @@ function Home() {
 
   }, []);
 
+
   useEffect(() => {
     const fetchJobTitles = async () => {
       try {
@@ -57,8 +58,8 @@ function Home() {
   const createQuestion = async () => {
     setLoading(true);
     const questionsList = questions;
-    const userId = JSON.stringify(user.id);
     try {
+      const userId = JSON.stringify(user.user_id);
       for (const question of questionsList) {
         const response = await axios.post('http://localhost:3001/questions/createQuestion', {
           jobId,
@@ -76,20 +77,20 @@ function Home() {
     }
   }
 
-  const createAnswer = async (userAnswer) => {
+  const createAnswer = async (userAnswer, currentQuestionIndex) => {
     setLoading(true);
     try {
-      const userId = JSON.stringify(user.id);
+      const userId = JSON.stringify(user.user_id);
 
       const response = await axios.post('http://localhost:3001/answers/createAnswer', {
         userId,
-
+        currentQuestionIndex,
         userAnswer
       });
-      const newInterviewId = response.data.interviewId;
-      console.log('Created interview ID:', newInterviewId);
-      setInterviewId(newInterviewId);
-      return newInterviewId;
+      // const newInterviewId = response.data.interviewId;
+      // console.log('Created interview ID:', newInterviewId);
+      // setInterviewId(newInterviewId);
+      // return newInterviewId;
 
     } catch (error) {
       console.error("Error creating interview:", error);
@@ -104,7 +105,7 @@ function Home() {
     try {
       const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
       const userId = JSON.stringify(user.user_id);
-      console.log("intreview userID" + userId)
+      console.log("interview userID" + userId)
       const response = await axios.post('http://localhost:3001/interviews/createInterview', {
         userId,
         jobId,
@@ -122,6 +123,19 @@ function Home() {
       setLoading(false); // לעצור את ההטענה בכל מקרה
     }
   }
+  const createFeedback = async (feedback) => {
+    try {
+        await axios.post('http://localhost:3001/feedback/saveFeedback', {
+            interviewId,
+            feedback
+        });
+        console.log('Feedback saved successfully');
+    } catch (error) {
+        console.error('Error saving feedback:', error);
+    }
+};
+
+
 
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
@@ -129,7 +143,7 @@ function Home() {
     try {
       const response = await axios.post('http://localhost:3001/questions/getQuestions', { jobTitle });
       setQuestions(response.data.questions);
-      console.log("Response from API:", response.data.questions);
+      // console.log("Response from API:", response.data.questions);
       console.log("Questions list:", questions);
       const newInterviewId = await createInterview(e);
       setCurrentQuestionIndex(0);
@@ -147,7 +161,7 @@ function Home() {
     e.preventDefault();
     setLoading(true);
     const userAnswer = e.target.answer.value;
-    createAnswer(userAnswer);
+    createAnswer(userAnswer, currentQuestionIndex);
     const prompt = `השאלה: ${questions[currentQuestionIndex]}. התשובה שלך: ${userAnswer}. תן את חוות דעתך על התשובה האם היא נכונה ומה צריך לשפר בה תשתדל שתשובתך תהיה באורך 5 שורות מקסימום`;
     try {
       const response = await axios.post('http://localhost:3001/getFeedback', { prompt });
@@ -169,6 +183,7 @@ function Home() {
     try {
       const response = await axios.post('http://localhost:3001/getFeedback', { prompt: overallFeedbackPrompt });
       setFeedback(response.data.feedback); // Display overall feedback
+      createFeedback(feedback);
       setShowFinalFeedback(true)
     } catch (error) {
       console.error("Error getting overall feedback:", error);
@@ -188,7 +203,7 @@ function Home() {
 
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <NavBar />
+      <NavBar />
       <h1>מערכת הכנה לראיונות עבודה</h1>
       {/* Only show job selection if no questions are loaded */}
       {!questions.length && (

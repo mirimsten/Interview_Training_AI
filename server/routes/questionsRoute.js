@@ -7,7 +7,7 @@ dotenv.config();
 const GEMINI_API_KEY = 'AIzaSyAvGug2EG0V4vqitmlTEtBmoiqNKyva0w0';
 
 router.post('/getQuestions', async (req, res) => {
-    const { username, jobTitle } = req.body;
+    const { jobTitle } = req.body;
     try {
         const questions = await generateInterviewQuestions(jobTitle);
         res.json({ questions });

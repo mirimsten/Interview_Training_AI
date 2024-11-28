@@ -3,7 +3,7 @@ const db = require('../DB');
 async function createAnswer(user_id, question_id, answer_text ) {
     try {
         // הכנסת משתמש לטבלת users
-        const sqlAnswer = `INSERT INTO answers (user_id, question_id, answer_text) VALUES (?, ?, ?, ?)`;
+        const sqlAnswer = `INSERT INTO answers (user_id, question_id, answer_text) VALUES (?, ?, ?)`;
         const [resultAnswer] = await db.query(sqlAnswer, [user_id, question_id, answer_text]);
 
         if (!resultAnswer.insertId) {
