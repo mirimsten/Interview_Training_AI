@@ -29,7 +29,7 @@ router.post('/signup', async (req, res) => {
         console.error('Error during user signup:', err.message);
         
         // אם השגיאה היא על כך שהמשתמש כבר קיים
-        if (err.message === "User already exists") {
+        if (err.message === "Error in createUser: User already exists") {
             return res.status(400).json({ error: 'המשתמש כבר קיים' });  // הודעת שגיאה ברורה למייל קיים
         }
         
@@ -53,7 +53,7 @@ router.post('/login', async (req, res) => {
             return res.status(404).json({ error: 'User not found.' });
         }
 
-        console.log("User logged in successfully:", user.id);
+        console.log("User logged in successfully:", user.user_id);
         return res.status(200).json({ message: 'Login successful!' });
 
     } catch (err) {
