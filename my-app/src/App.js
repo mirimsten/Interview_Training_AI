@@ -1,17 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './components/Login';
+import Login from './components/LogIn';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 
 // רכיב App שמנהל ניתובים
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = React.useState(false); // ניהול מצב התחברות
+  //const [isAuthenticated, setIsAuthenticated] = React.useState(false); // ניהול מצב התחברות
 
   // פונקציה לדמות התחברות
-  const handleLogin = () => {
-    setIsAuthenticated(true);
-  };
+//   const handleLogin = () => {
+//     setIsAuthenticated(true);
+//   };
 
   return (
     <BrowserRouter>
@@ -19,7 +19,7 @@ function App() {
         {/* ניתוב לעמוד הכניסה */}
         <Route
           path="/login"
-          element={<Login onLogin={handleLogin} />}
+          element={<Login />}
         />
         
         {/* ניתוב לעמוד ההרשמה */}
@@ -31,9 +31,7 @@ function App() {
         {/* ניתוב לעמוד הבית - מחייב התחברות */}
         <Route
           path="/home"
-          element={
-            isAuthenticated ? <Home /> : <Navigate to="/login" replace />
-          }
+          element={<Home /> }
         />
         
         {/* ניתוב ברירת מחדל */}

@@ -2,8 +2,13 @@ import React, { useState, useEffect } from 'react';
 //import { Navigate, BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../App.css'
+//import { createInterview } from '../../../server/models/interviewModel';
+//import { getUserByEmail } from '../../../server/models/userModel';
 function Home() {
+  const [user, setUser] = useState(null); // State to store user details
+  //const [userId, setUserId] = useState('');
   const [jobTitle, setJobTitle] = useState('');
+  const[jobId, setJobId] = useState('');
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState([]);
@@ -13,11 +18,26 @@ function Home() {
   const [showFinalFeedback, setShowFinalFeedback] = useState(false);
   const [jobOptions, setJobOptions] = useState([]);
 
+// const user = JSON.parse(localStorage.getItem('user'));
+// const userEmail = user ? user.email : ''; // שליפה פשוטה של המייל
+// console.log("User email from localStorage:", userEmail);
+
+  // Fetch user details from localStorage
+  useEffect(() => {
+    const savedUser = JSON.parse(localStorage.getItem('user'));
+    if (savedUser) {
+         setUser(savedUser);
+         console.log("המשתמש שנשמר:" + JSON.stringify(savedUser));
+       }
+
+  }, []);
+
   useEffect(() => {
     const fetchJobTitles = async () => {
       try {
         const response = await axios.get('http://localhost:3001/getJobTitles');
-        setJobOptions(response.data.jobTitles);
+        setJobOptions(response.data.jobTitles.map(job => job.skill_name));
+        setJobId(response.data.jobTitles.map(job => job.skill_id));
       } catch (error) {
         console.error("Error fetching job titles:", error);
       }
@@ -26,12 +46,61 @@ function Home() {
     fetchJobTitles();
   }, []);
 
+
+// const getUserByEmail = async (e) =>{
+//   e.preventDefault();
+//     setLoading(true);
+//     //const user_email = user.email;
+//     const user_email = JSON.stringify(user.email);
+//     let cleanedEmail = user_email.replace(/^"|"$/g, '');
+//      console.log(cleanedEmail);
+//     try {
+//       const response = await axios.get('http://localhost:3001/users/getUserByEmail', {
+//         params: { email: cleanedEmail }, // השתמש ב-"params" במקום ב-"body" עבור קריאות GET
+//       });
+//       const userId = response.data.user_id; // הנחה שהתוצאה היא מערך
+//       console.log("vhh"+ userId);
+//       return userId;
+//     } 
+//     catch(error){
+//       console.error("Error fetching questions:", error);
+//     }finally {
+//       setLoading(false);
+//     }
+// };
+
+const createInterview = async (e) =>{
+  e.preventDefault();
+    setLoading(true);
+    try {
+      const currentDate = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+      const userId = JSON.stringify(user.id);
+      console.log("Current date being sent:", currentDate);
+      console.log("User ID being sent:", userId);
+
+      const response = await axios.post('http://localhost:3001/interviews/createInterview', {
+        userId,
+        jobId,
+        interview_date: currentDate,
+      });
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error creating interview:", error);
+    } finally {
+      setLoading(false); // לעצור את ההטענה בכל מקרה
+    }
+}
+
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3001/getQuestions', { jobTitle });
+      const response = await axios.post('http://localhost:3001/questions/getQuestions', { jobTitle });
       setQuestions(response.data.questions);
+      //setUserId(getUserByEmail(e));
+      //console.log("userId is!!:", userId);
+      const newInterview = createInterview(e);
+      //לשלוח פה את השאלות לטבלת השאלות אבל צריך id של המשתמש ושל הראיון
       setCurrentQuestionIndex(0);
       setUserAnswers([]);
       setFeedback('');
@@ -95,7 +164,9 @@ function Home() {
             <span>בחר תפקיד:</span>
             <select
               value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
+              onChange={(e) => {
+                setJobTitle(e.target.value);
+              }}
               style={{ marginLeft: '10px', padding: '5px' }}
               disabled={loading}
             >
@@ -143,7 +214,7 @@ function Home() {
           <button onClick={handleRestartInterview} style={{ padding: '5px 20px', marginTop: '10px', marginLeft: '10px' }}>
             בחר ראיון נוסף
           </button>
-          {showFinalFeedback &&( <p>{feedback}</p>)}
+          {showFinalFeedback && (<p>{feedback}</p>)}
         </div>
       ) : null}
 

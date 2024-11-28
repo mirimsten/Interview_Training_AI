@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const  [username, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // הגדרת הפונקציה ניווט
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,16 +18,22 @@ const SignUp = () => {
         email,
         password,
       });
-
+      console.log(response.config.data);
       // הנתונים מהשרת כבר זמינים ב-response.data
       const data = response.data;
-
+      console.log(data);
       // בדיקת סטטוס התגובה (למרות ש-axios זורק שגיאה אם הסטטוס אינו 2xx)
       if (response.status === 201) {
+        const user = response.data.user; // קבלת המשתמש מהשרת
+        console.log("User data:", user);
+
         alert('הרשמה בוצעה בהצלחה!');
         setUserName('');
         setEmail('');
         setPassword('');
+        localStorage.setItem('user', JSON.stringify(user));
+        //localStorage.setItem('user', response.config.data);
+        navigate('/home'); // העברה לעמוד הבית עם הנתונים
       } else {
         alert(`שגיאה בהרשמה: ${data.error}`);
       }
