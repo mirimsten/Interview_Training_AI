@@ -22,15 +22,19 @@ async function getUserByEmail(email) {
         throw new Error("Error " + err.message);
     }
 }
-async function logIn(email,password) {
+async function logIn(email, password) {
     try {
         const user = await CheckIfExist(email);
         console.log("log in controller" + JSON.stringify(user));
         if (user) { // אם מצא כזה לקוח
-            const userID = user.userID;
+            const userID = user.user_id;
+            console.log("userId " + userID);
             const passwordRecord = await model.getPasswordByUserID(userID);
+            console.log(`controllers ${JSON.stringify(passwordRecord)}`)
             if (passwordRecord) {
-                const match = await bcrypt.compare(body.password, passwordRecord[0].password);
+                const password_hash = passwordRecord[0].password_hash;
+                console.log("controllers "+ password_hash)
+                const match = await bcrypt.compare(password,password_hash);
                 if (match) {
                     console.log("Password matches");
                     return user;
@@ -49,12 +53,12 @@ async function logIn(email,password) {
 }
 
 
-async function createUser( username, email, password ) {
+async function createUser(username, email, password) {
     try {
 
-       const user = await CheckIfExist(email);
-       console.log("User existence check result:", user);
-       if (!user) {
+        const user = await CheckIfExist(email);
+        console.log("User existence check result:", user);
+        if (!user) {
             try {
                 const hashedPassword = await bcrypt.hash(password, saltRounds);
                 const newUser = await model.createUser(username, email, hashedPassword);
@@ -64,13 +68,13 @@ async function createUser( username, email, password ) {
             catch (err) {
                 throw new Error("Error creating user: " + err.message);
             }
-       } else {
-           throw new Error("User already exists");
-       }
+        } else {
+            throw new Error("User already exists");
+        }
 
     }
     catch (err) {
         throw new Error("Error in createUser: " + err.message);
     }
 }
-module.exports={createUser,CheckIfExist,logIn,getUserByEmail};
+module.exports = { createUser, CheckIfExist, logIn, getUserByEmail };

@@ -1,10 +1,12 @@
+const { json } = require('express');
 const db = require('../DB');
 
 async function getUserByEmail(email) {
     try {
+        console.log(email);
         const sql = 'SELECT * FROM users WHERE users.email = ?';
         const [rows] = await db.query(sql, [email]);
-        console.log(`getUserByEmail result: ${JSON.stringify(rows)}`); // בדוק את התוצאה
+        console.log(`getUserByEmail result: ${rows}`); // בדוק את התוצאה
         return rows; // תמיד תחזיר מערך
     } catch (err) {
         throw new Error("Error in getUserByEmail: " + err.message);
@@ -12,8 +14,9 @@ async function getUserByEmail(email) {
 }
 async function getPasswordByUserID(userID) {
     try {
-        const sql = 'SELECT password FROM passwords WHERE userID = ?';
-        const [rows] = await pool.query(sql, [userID]);
+        const sql = 'SELECT password_hash FROM passwords WHERE user_id = ?';
+        const [rows] = await db.query(sql, [userID]);
+        console.log(`password ${JSON.stringify(rows)}`)
         return rows;
     } catch (err) {
         throw err;
