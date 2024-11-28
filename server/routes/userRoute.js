@@ -22,7 +22,7 @@ router.post('/signup', async (req, res) => {
         }
 
         console.log("User created successfully with ID:", id);
-        return res.status(201).json({ message: 'User registered successfully!' });
+        return res.status(201).json({ message: 'User registered successfully!' ,user: { id, username, email }});
 
     } 
     catch (err) {
@@ -61,5 +61,22 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error.' });
     }
 });
+router.get('/getUserByEmail', async (req, res) => {
+    const { email } = req.query;
+    console.log("המייל שנשלח:"+ email);
+    try{
+        const user = await controller.getUserByEmail(email);
+        console.log("rout uert"+user.user_id);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+        return res.status(200).json(user);
+    }
+    catch (err) {
+        console.error('Error during user login:', err.message);
+        return res.status(500).json({ error: 'Internal server error.' });
+    }
+
+})
 
 module.exports = router; // ייצוא ה-Router

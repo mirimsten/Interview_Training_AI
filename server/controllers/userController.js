@@ -1,4 +1,4 @@
-const { default: Login } = require('../../my-app/src/components/LogIn');
+//const { default: Login } = require('../../my-app/src/components/LogIn');
 const model = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const saltRounds = 10; // קביעת מספר סיבובי ההצפנה
@@ -11,6 +11,15 @@ async function CheckIfExist(email) {
         return user.length > 0 ? user[0] : null; // החזר null אם המשתמש לא נמצא
     } catch (err) {
         throw new Error("Error in CheckIfExist: " + err.message);
+    }
+}
+async function getUserByEmail(email) {
+    try {
+        const user = await model.getUserByEmail(email);
+        console.log("controller user:", user); // בדוק את המידע שמוחזר
+        return user.length > 0 ? user[0] : null; // החזר null אם המשתמש לא נמצא
+    } catch (err) {
+        throw new Error("Error " + err.message);
     }
 }
 async function logIn(email,password) {
@@ -64,4 +73,4 @@ async function createUser( username, email, password ) {
         throw new Error("Error in createUser: " + err.message);
     }
 }
-module.exports={createUser,CheckIfExist,logIn};
+module.exports={createUser,CheckIfExist,logIn,getUserByEmail};
