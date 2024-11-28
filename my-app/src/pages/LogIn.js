@@ -23,6 +23,7 @@ const Login = () => {
       // אם התחברות הצליחה
       if (response.status === 200) {
         alert('התחברת בהצלחה!');
+        localStorage.setItem('user', JSON.stringify(user));
         navigate('/home'); // נווט לדף הבית או הדף הרצוי
       } else {
         alert(`שגיאה בהתחברות: ${data.error}`);
