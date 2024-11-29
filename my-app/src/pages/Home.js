@@ -40,7 +40,7 @@ function Home() {
       try {
         const response = await axios.get('http://localhost:3001/getJobTitles');
         setJobOptions(response.data.jobTitles.map(job => job.skill_name));
-        //setJobId(response.data.jobTitles.map(job => job.skill_id));
+        setJobId(response.data.jobTitles.map(job => job.skill_id));
         setJobId(response.data.jobTitles[0].skill_id);
       } catch (error) {
         console.error("Error fetching job titles:", error);
@@ -71,7 +71,7 @@ function Home() {
     setLoading(true);
     const questionsList = questions;
     try {
-      const userId = JSON.stringify(user.id);
+      const userId = JSON.stringify(user.user_id);
       console.log("client sent id: " + userId);
       for (const question of questionsList) {
         const response = await axios.post('http://localhost:3001/questions/createQuestion', {
@@ -109,7 +109,7 @@ function Home() {
 const createAnswer = async (userAnswer,questionId) => {
   setLoading(true);
   try {
-    const userId = JSON.stringify(user.id);
+    const userId = JSON.stringify(user.user_id);
     //const questionId = createdQuestions[currentQuestionIndex].questionId;
     const response = await axios.post('http://localhost:3001/answers/createAnswer', {
       userId,
@@ -160,6 +160,14 @@ const createFeedback = async (feedback1) => {
     console.error('Error saving feedback:', error);
   }
 };
+// const fetchPreviousInterviews = async () => {
+//   try {
+//       const response = await axios.get(`http://localhost:3001/interviews/getPreviousInterviews/${user.user_id}`);
+//       setPreviousInterviews(response.data);
+//   } catch (error) {
+//       console.error("Error fetching previous interviews:", error);
+//   }
+// };
 
 const handleGenerateQuestions = async (e) => {
   e.preventDefault();

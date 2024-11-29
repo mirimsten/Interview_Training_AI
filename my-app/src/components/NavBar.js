@@ -18,9 +18,8 @@ const NavBar = () => {
         <nav className="navbar">
             <h1 className="navbar-logo">MyApp</h1>
             <ul className="navbar-links">
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/about">About</Link></li>
-                <li><Link to="/contact">Contact</Link></li>
+                <li><Link to="/">התנתק</Link></li>
+                <li><Link to="/previousInterviews">ראיונות קודמים</Link></li>
             </ul>
             {userName && (
                 <div className="navbar-user">

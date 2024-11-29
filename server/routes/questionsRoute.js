@@ -4,7 +4,7 @@ const controller = require("../controllers/questionsController");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const dotenv = require('dotenv');
 dotenv.config();
-const GEMINI_API_KEY = 'AIzaSyCOkrlLP54ZGhfCM_usdIFf4c1BT-FcKhY';
+const GEMINI_API_KEY = 'AIzaSyAvGug2EG0V4vqitmlTEtBmoiqNKyva0w0';
 
 router.post('/getQuestions', async (req, res) => {
     const { jobTitle } = req.body;

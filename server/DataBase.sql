@@ -76,21 +76,21 @@ CREATE TABLE Answers (
 );
 
 -- טבלת משוב על תשובות
-CREATE TABLE Feedback (
-    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
-    answer_id INT NOT NULL,
-    feedback_text TEXT NOT NULL,
-    feedback_rating INT,
-    -- דירוג בין 1 ל-5
-    FOREIGN KEY (answer_id) REFERENCES Answers(answer_id)
-);
+-- CREATE TABLE Feedback (
+--     feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+--     answer_id INT NOT NULL,
+--     feedback_text TEXT NOT NULL,
+--     feedback_rating INT,
+--     -- דירוג בין 1 ל-5
+--     FOREIGN KEY (answer_id) REFERENCES Answers(answer_id)
+-- );
 
--- טבלת משוב כללי
-CREATE TABLE General_Feedback (
-    general_feedback_id INT AUTO_INCREMENT PRIMARY KEY,
-    interview_id INT NOT NULL,
-    feedback_text TEXT NOT NULL,
-    rating INT,
-    -- דירוג בין 1 ל-5
-    FOREIGN KEY (interview_id) REFERENCES Interviews(interview_id)
-);
+-- -- טבלת משוב כללי
+-- CREATE TABLE General_Feedback (
+--     general_feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+--     interview_id INT NOT NULL,
+--     feedback_text TEXT NOT NULL,
+--     rating INT,
+--     -- דירוג בין 1 ל-5
+--     FOREIGN KEY (interview_id) REFERENCES Interviews(interview_id)
+-- );

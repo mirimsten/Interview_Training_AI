@@ -30,5 +30,5 @@ router.post('/createInterview', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error.' });
     }
 });
-
+router.get('/getPreviousInterviews/:userId',controller.getPreviousInterviews);
 module.exports = router;

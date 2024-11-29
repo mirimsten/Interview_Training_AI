@@ -18,4 +18,22 @@ async function createInterview(user_id, skill_id, interview_date, feedback ) {
     }
 }
 
-module.exports = { createInterview };
+async function getPreviousInterviews(id) {
+    try {
+        console.log("model interviews "+id);
+        const sql = 'SELECT * FROM interviews WHERE user_id = ?';
+        const [rows] = await db.query(sql, [id]);
+        console.log(`interviews result: ${rows}`); // בדוק את התוצאה
+        return rows; // תמיד תחזיר מערך
+    } catch (err) {
+        throw new Error("Error in getUserByEmail: " + err.message);
+    }
+}
+
+
+
+
+
+
+
+module.exports = { createInterview ,getPreviousInterviews};

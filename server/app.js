@@ -22,6 +22,8 @@ const questionRoute=require("./routes/questionsRoute")
 const interviewRoute = require("./routes/interviewRout")
 const answerRoute=require("./routes/answerRoute")
 const feedbackRoute=require("./routes/feedbackRoute")
+const skillRoutes = require('./routes/skillRoute');
+app.use('/skills', skillRoutes);
 app.use('/users',userRoute);
 app.use('/questions', questionRoute);
 app.use('/interviews', interviewRoute);
