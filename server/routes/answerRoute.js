@@ -4,13 +4,13 @@ const controller = require("../controllers/answerController");
 
 // create interview
 router.post('/createAnswer', async (req, res) => {
-    const { userId,currentQuestionIndex,
+    const { userId,questionId,
         userAnswer } = req.body;
 
-    console.log(`answers ${userId} ${currentQuestionIndex} ${userAnswer}`);
+    console.log(`answers ${userId} ${questionId} ${userAnswer}`);
     try {
         // קריאה לפונקציה ליצירת משתמש
-        const answerId = await controller.createAnswer(userId,currentQuestionIndex,
+        const answerId = await controller.createAnswer(userId,questionId,
             userAnswer);
 
         if (!answerId) {

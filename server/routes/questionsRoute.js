@@ -4,7 +4,7 @@ const controller = require("../controllers/questionsController");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const dotenv = require('dotenv');
 dotenv.config();
-const GEMINI_API_KEY = 'AIzaSyAvGug2EG0V4vqitmlTEtBmoiqNKyva0w0';
+const GEMINI_API_KEY = 'AIzaSyCOkrlLP54ZGhfCM_usdIFf4c1BT-FcKhY';
 
 router.post('/getQuestions', async (req, res) => {
     const { jobTitle } = req.body;
@@ -63,6 +63,7 @@ async function generateInterviewQuestions(jobTitle) {
 router.post('/createQuestion', async (req, res) => {
     const { jobId,userId,interviewId,question } = req.body;
     try{
+        console.log("route sent: "+ userId);
         const questionId = await controller.createQuestion(jobId, userId, interviewId, question);
         if (!questionId) {
             console.error('Failed to retrieve question ID.');

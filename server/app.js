@@ -31,16 +31,16 @@ app.use('/answers', answerRoute);
 
 
 
-app.post('/getFeedback', async (req, res) => {
-    const { prompt } = req.body;
-    try {
-        const response = await generateFeedback(prompt);
-        res.json({ feedback: response });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to get feedback' });
-    }
-});
+// app.post('/getFeedback', async (req, res) => {
+//     const { prompt } = req.body;
+//     try {
+//         const response = await generateFeedback(prompt);
+//         res.json({ feedback: response });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ error: 'Failed to get feedback' });
+//     }
+// });
 
 app.get('/getJobTitles', async (req, res) => {
     try {
@@ -54,18 +54,18 @@ app.get('/getJobTitles', async (req, res) => {
 
 
 
-async function generateFeedback(prompt) {
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+// async function generateFeedback(prompt) {
+//     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+//     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    try {
-        const result = await model.generateContent(prompt);
-        return result.response.text();
-    } catch (error) {
-        console.error('Error generating feedback:', error);
-        return 'Error processing your response.';
-    }
-}
+//     try {
+//         const result = await model.generateContent(prompt);
+//         return result.response.text();
+//     } catch (error) {
+//         console.error('Error generating feedback:', error);
+//         return 'Error processing your response.';
+//     }
+// }
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
