@@ -71,7 +71,7 @@ function Home() {
     setLoading(true);
     const questionsList = questions;
     try {
-      const userId = JSON.stringify(user.user_id);
+      const userId = JSON.stringify(user.id);
       console.log("client sent id: " + userId);
       for (const question of questionsList) {
         const response = await axios.post('http://localhost:3001/questions/createQuestion', {
@@ -109,7 +109,7 @@ function Home() {
 const createAnswer = async (userAnswer,questionId) => {
   setLoading(true);
   try {
-    const userId = JSON.stringify(user.user_id);
+    const userId = JSON.stringify(user.id);
     //const questionId = createdQuestions[currentQuestionIndex].questionId;
     const response = await axios.post('http://localhost:3001/answers/createAnswer', {
       userId,
@@ -162,7 +162,7 @@ const createFeedback = async (feedback1) => {
 };
 // const fetchPreviousInterviews = async () => {
 //   try {
-//       const response = await axios.get(`http://localhost:3001/interviews/getPreviousInterviews/${user.user_id}`);
+//       const response = await axios.get(`http://localhost:3001/interviews/getPreviousInterviews/${user.id}`);
 //       setPreviousInterviews(response.data);
 //   } catch (error) {
 //       console.error("Error fetching previous interviews:", error);

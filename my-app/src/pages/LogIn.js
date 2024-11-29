@@ -23,7 +23,13 @@ const Login = () => {
       // אם התחברות הצליחה
       if (response.status === 200) {
         alert('התחברת בהצלחה!');
-      localStorage.setItem('user', JSON.stringify(data.user));
+        const userData = {
+          id: data.user.user_id, // ממירים את המפתח
+          username: data.user.username,
+          email: data.user.email,
+        };
+        
+        localStorage.setItem('user', JSON.stringify(userData));
         navigate('/home'); // נווט לדף הבית או הדף הרצוי
       } else {
         alert(`שגיאה בהתחברות: ${data.error}`);
