@@ -10,9 +10,11 @@ const PreviousInterviews = () => {
 
     useEffect(() => {
         const user = localStorage.getItem('user');
+        console.log("prev: "+ user);
 
         if (user) {
-            const userId = JSON.parse(user).user_id;
+            const userId = JSON.parse(user).id;
+            console.log(userId);
 
             // קריאה ל-API לקבלת הראיונות של המשתמש המחובר
             axios
