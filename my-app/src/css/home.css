@@ -1,0 +1,81 @@
+.job-div{
+    width: 700px;
+    margin: 0;
+    /* מסיר מרווחים אנכיים */
+    padding: 40px;
+    min-width: 300px;
+    max-width: 600px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
+    text-align: center;
+    margin-top: 100px;
+    background:#ffffffc2;
+    padding: 40px;
+    min-width: 300px;
+    max-width: 1000px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
+    /* טקסט במרכז */
+}
+.PreviousInervies{
+    width: 700px;
+    margin: 0;
+    /* מסיר מרווחים אנכיים */
+    padding: 40px;
+    min-width: 300px;
+    max-width: 600px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
+    text-align: center;
+    margin-top: 100px;
+    background: #ffffffc2;
+    padding: 40px;
+    min-width: 300px;
+    max-width: 1000px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
+    overflow-y: auto;  /* מאפשר גלילה אנכית אם התוכן חורג */
+    max-height: 70vh; 
+}
+li {
+    width: auto; /* לא קובעים רוחב קבוע */
+    height: auto; /* לא קובעים גובה קבוע */
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
+    background: #ffffffc2;
+    text-align: center;
+    display: inline-block; /* זה גורם לאלמנט להסתגל לגודל התוכן */
+    margin: 10px; /* אם רוצים להוסיף מרווח בין הפריטים */
+}
+
+ul {
+    display: grid; /* אפשרות הצגת האלמנטים בשורות */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* יצירת רשת עם עמודות גמישות */
+    gap: 20px; /* מרווח בין ה-LI */
+    padding: 0;
+    list-style: none; /* מסיר את הנקודות בתחילת כל פריט */
+}
+
+
+h3 {
+    color: #006D77;
+    font-weight: 600;
+}
+
+p {
+    color: #343131;
+}
+.backButton{
+    width: unset;
+    text-align: left; /* מ Align את הטקסט לשמאל */
+    display: block; /* כפתור יהיה block להדבקה לשמאל */
+    margin-left: 0; 
+    background-color: #006D77;
+}
+/* התאמת סגנון למכשירים קטנים */
+@media (max-width: 600px) {
+    ul {
+        grid-template-columns: 1fr; /* שינוי לפריסה של עמודה אחת */
+    }
+}

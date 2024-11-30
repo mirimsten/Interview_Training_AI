@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 //import { Navigate, BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from '../components/NavBar';
-import '../App.css'
+import '../css/home.css'
+//import '../App.css'
 //import { createInterview } from '../../../server/models/interviewModel';
 //import { getUserByEmail } from '../../../server/models/userModel';
 function Home() {
@@ -19,7 +20,7 @@ function Home() {
   const [showFinalFeedback, setShowFinalFeedback] = useState(false);
   const [jobOptions, setJobOptions] = useState([]);
   const [createdQuestions, setCreatedQuestions] = useState([]);
-
+  const [buttonClicked, setButtonClicked] = useState(false);
   // const user = JSON.parse(localStorage.getItem('user'));
   // const userEmail = user ? user.email : ''; // שליפה פשוטה של המייל
   // console.log("User email from localStorage:", userEmail);
@@ -222,10 +223,9 @@ function Home() {
     const overallFeedbackPrompt = `הנה כל המשובים על תשובות המועמד: \n${allFeedbacks.join("\n")}\nבהתבסס על המשובים, תן לי משוב כללי על הראיון.`;
     try {
       const response = await axios.post('http://localhost:3001/feedback/getFeedback', { prompt: overallFeedbackPrompt });
-      setFeedback(response.data.feedback); // Display overall feedback
-
+      setFeedback(response.data.feedback);
       createFeedback(response.data.feedback);
-      setShowFinalFeedback(true)
+      setShowFinalFeedback(true);
     } catch (error) {
       console.error("Error getting overall feedback:", error);
     } finally {
@@ -242,98 +242,94 @@ function Home() {
     setAllFeedbacks([]);
   };
 
+  const handleButtonClick = () => {
+    setButtonClicked(true); // עדכון ה-state כאשר הכפתור נלחץ
+    handleFinishInterview(); // קריאה לפונקציה שמספקת את המשוב הכללי
+  };
 
-      return (
-      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-        <NavBar />
-        <h1>מערכת הכנה לראיונות עבודה</h1>
-        {/* Only show job selection if no questions are loaded */}
-        {!questions.length && (
-          <form onSubmit={handleGenerateQuestions} style={{ marginBottom: '20px' }}>
-            <label>
-              <span>בחר תפקיד:</span>
-              {/* <select
-            value={jobTitle}
-            onChange={(e) => {
-              setJobTitle(e.target.value);
-            }}
-            style={{ marginLeft: '10px', padding: '5px' }}
-            disabled={loading}
-          >
-            <option value="" disabled>בחר תפקיד</option>
-            {jobOptions.map((job, index) => (
-              <option key={index} value={job}>{job}</option>
-            ))}
-          </select> */}
-              <select
-                value={jobTitle}
-                onChange={(e) => {
-                  const selectedJobId = e.target.value;
-                  const selectedJobName = jobOptions.find(job => job.skill_id === parseInt(selectedJobId))?.skill_name || '';
-                  setJobTitle(selectedJobName); // שמירת שם התפקיד
-                  setJobId(selectedJobId); // שמירת מזהה התפקיד
-                }}
-                style={{ marginLeft: '10px', padding: '5px' }}
-                disabled={loading}
-              >
-                <option value="" disabled>בחר תפקיד</option>
-                {jobOptions.map((job) => (
-                  <option key={job.skill_id} value={job.skill_id}>
-                    {job.skill_name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button type="submit" style={{ marginLeft: '10px', padding: '5px 10px' }} disabled={loading}>
-              {loading ? 'טוען...' : 'בקש שאלות'}
+
+  return (
+    <div className="job-div" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+      <NavBar />
+
+      {/* Only show job selection if no questions are loaded */}
+      {!questions.length && (
+        <form onSubmit={handleGenerateQuestions} style={{ marginBottom: '20px' }}>
+          <label>
+            <h1>:בחר תפקיד</h1>
+            <select
+              value={jobTitle}
+              onChange={(e) => {
+                const selectedJobId = e.target.value;
+                const selectedJobName = jobOptions.find(job => job.skill_id === parseInt(selectedJobId))?.skill_name || '';
+                setJobTitle(selectedJobName);
+                setJobId(selectedJobId);
+              }}
+              style={{ marginLeft: '10px', padding: '5px' }}
+              disabled={loading}
+            >
+              <option value="" disabled>******</option>
+              {jobOptions.map((job) => (
+                <option key={job.skill_id} value={job.skill_id}>
+                  {job.skill_name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button type="submit" style={{ marginLeft: '10px', padding: '5px 10px' }} disabled={loading}>
+            {loading ? 'טוען...' : 'בקש שאלות'}
+          </button>
+        </form>
+      )}
+
+      {/* Display questions and answer form */}
+      {questions.length > 0 && currentQuestionIndex < questions.length ? (
+        <div>
+          <h1>{jobTitle} ראיון הכנה בנושא </h1>
+          <h2>שאלה {currentQuestionIndex + 1} מתוך {questions.length}</h2>
+          <p>{questions[currentQuestionIndex]}</p>
+          <form onSubmit={handleSubmitAnswer} style={{ marginTop: '10px' }}>
+            <textarea
+              name="answer"
+              placeholder="כתוב את התשובה שלך כאן..."
+              style={{ width: '100%', height: '100px', padding: '10px', marginBottom: '10px' }}
+              disabled={loading}
+            ></textarea>
+            <button type="submit" style={{ padding: '5px 20px' }} disabled={loading}>
+              {loading ? 'טוען...' : 'שלח תשובה'}
             </button>
           </form>
-        )}
-
-        {/* Display questions and answer form */}
-        {questions.length > 0 && currentQuestionIndex < questions.length ? (
-          <div>
-            <h2>שאלה {currentQuestionIndex + 1} מתוך {questions.length}:</h2>
-            <p>{questions[currentQuestionIndex]}</p>
-            <form onSubmit={handleSubmitAnswer} style={{ marginTop: '10px' }}>
-              <textarea
-                name="answer"
-                placeholder="כתוב את התשובה שלך כאן..."
-                style={{ width: '100%', height: '100px', padding: '10px', marginBottom: '10px' }}
-                disabled={loading}
-              ></textarea>
-              <button type="submit" style={{ padding: '5px 20px' }} disabled={loading}>
-                {loading ? 'טוען...' : 'שלח תשובה'}
-              </button>
-            </form>
-            {feedback && (
-              <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#f0f8ff', borderRadius: '5px' }}>
-                <strong>משוב:</strong>
-                <p>{feedback}</p>
-              </div>
-            )}
-          </div>
-        ) : questions.length > 0 && currentQuestionIndex === questions.length ? (
-          <div>
-            <p>סיימת את כל השאלות! כל הכבוד!</p>
-            <button onClick={handleFinishInterview} style={{ padding: '5px 20px', marginTop: '10px' }}>
+          {feedback && (
+            <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#f0f8ff', borderRadius: '5px' }}>
+              <strong>:משוב</strong>
+              <p>{feedback}</p>
+            </div>
+          )}
+        </div>
+      ) : questions.length > 0 && currentQuestionIndex === questions.length ? (
+        <div>
+          <p>!סיימת את כל השאלות! כל הכבוד</p>
+          {!buttonClicked && ( // אם הכפתור לא נלחץ, תציג אותו
+            <button onClick={handleButtonClick} style={{ padding: '5px 20px', marginTop: '10px' }}>
               קבל משוב כללי על הראיון
             </button>
-            <button onClick={handleRestartInterview} style={{ padding: '5px 20px', marginTop: '10px', marginLeft: '10px' }}>
-              בחר ראיון נוסף
-            </button>
-            {showFinalFeedback && (<p>{feedback}</p>)}
-          </div>
-        ) : null}
+          )}
+          <button onClick={handleRestartInterview} style={{ padding: '5px 20px', marginTop: '10px', marginLeft: '10px' }}>
+            בחר ראיון נוסף
+          </button>
+          {showFinalFeedback && (<p>{feedback}</p>)}
+        </div>
+      ) : null}
 
-        {/* Show loading spinner */}
-        {loading && (
-          <div className="loading-overlay">
-            <div className="spinner"></div>
-          </div>
-        )}
-      </div>
-      );
+      {/* Show loading spinner */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-      export default Home;
+
+export default Home;

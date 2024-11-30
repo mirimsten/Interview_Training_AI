@@ -16,7 +16,9 @@ const NavBar = () => {
 
     return (
         <nav className="navbar">
-            <h1 className="navbar-logo">MyApp</h1>
+            <h1 className="navbar-logo">!הכנה לראיון שלך-אתה בידים טובות
+
+            </h1>
             <ul className="navbar-links">
                 <li><Link to="/">התנתק</Link></li>
                 <li><Link to="/previousInterviews">ראיונות קודמים</Link></li>

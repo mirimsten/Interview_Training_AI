@@ -1,9 +1,18 @@
+
+
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #4728a7;
     padding: 1rem;
+    position: fixed; /* מיקומו קבוע למעלה */
+    top: 0; /* הצמדת ה-Navbar לחלק העליון של הדף */
+    left: 0; /* הצמדת ה-Navbar להתחלה האופקית */
+    width: 100%; /* מתיחת ה-Navbar על כל רוחב הדף */
+    z-index: 1000; /* להבטיח שה-Navbar יהיה מעל כל האלמנטים */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* צל עדין */
 }
 
 .navbar-logo {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import "../css/SignUp.css"
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,35 +12,28 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      // שליחת הנתונים לשרת
       const response = await axios.post('http://localhost:3001/users/login', {
         email,
         password,
       });
 
-      // הנתונים מהשרת כבר זמינים ב-response.data
       const data = response.data;
 
-      // אם התחברות הצליחה
       if (response.status === 200) {
         alert('התחברת בהצלחה!');
         const userData = {
-          id: data.user.user_id, // ממירים את המפתח
+          id: data.user.user_id,
           username: data.user.username,
           email: data.user.email,
         };
-        
+
         localStorage.setItem('user', JSON.stringify(userData));
-        navigate('/home'); // נווט לדף הבית או הדף הרצוי
+        navigate('/home');
       } else {
         alert(`שגיאה בהתחברות: ${data.error}`);
       }
-    } 
-    catch (error) {
-      // טיפול בשגיאות
+    } catch (error) {
       console.error('Error:', error);
-
-      // בדיקת שגיאה מהשרת
       if (error.response) {
         alert(`שגיאת שרת: ${error.response.data.error}`);
       } else {
@@ -49,27 +43,25 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div id="form">
       <h1>כניסה</h1>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <label>אימייל:</label>
+        <input
+          type="email"
+          placeholder="הכנס כתובת אימייל"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <label>סיסמה:</label>
+        <input
+          type="password"
+          placeholder="הכנס סיסמה"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         <button type="submit">התחבר</button>
       </form>
       <p>

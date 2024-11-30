@@ -1,4 +1,4 @@
-/* כללי */
+כללי
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f4f4f9;
@@ -23,7 +23,7 @@ form {
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
-  background-color: #fff;
+  background-color: rgb(77 185 201 / 28%);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -65,7 +65,7 @@ p {
   font-size: 1rem;
   color: #555;
 }
-
+/*  */
 textarea {
   width: 100%;
   height: 100px;
@@ -140,7 +140,7 @@ button:disabled, select:disabled, textarea:disabled {
   cursor: not-allowed;
 }
 button {
-  background-color: #28a745; /* צבע ירוק לכפתור */
+  background-color: #4728a7; /* צבע ירוק לכפתור */
   color: white;
   padding: 10px 20px;
   font-size: 1rem;

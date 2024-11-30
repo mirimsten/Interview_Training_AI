@@ -68,7 +68,8 @@ const PreviousInterviews = () => {
     }
 
     return (
-        <div>
+        <div className='PreviousInervies'>
+            <button className='backButton' onClick={handleGoBack}>חזור אחורה</button>
             <h1>ראיונות קודמים</h1>
             {interviews.length === 0 ? (
                 <p>אין ראיונות קודמים להצגה.</p>
@@ -87,7 +88,6 @@ const PreviousInterviews = () => {
                 </ul>
             )}
             {/* כפתור חזרה */}
-            <button onClick={handleGoBack}>חזור אחורה</button>
         </div>
     );
 };
