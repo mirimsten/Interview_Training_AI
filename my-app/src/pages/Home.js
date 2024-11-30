@@ -258,7 +258,8 @@ function Home() {
           <label>
             <h1>:בחר תפקיד</h1>
             <select
-              value={jobTitle}
+              // value={jobTitle}
+              value={jobId}
               onChange={(e) => {
                 const selectedJobId = e.target.value;
                 const selectedJobName = jobOptions.find(job => job.skill_id === parseInt(selectedJobId))?.skill_name || '';
