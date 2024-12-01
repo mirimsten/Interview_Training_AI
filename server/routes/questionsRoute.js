@@ -36,11 +36,14 @@ async function generateInterviewQuestions(jobTitle) {
     const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const prompt = `
-  אתה מראיין מנוסה לתפקיד של ${jobTitle}.
-    ספק לי 5 שאלות ראיון בעברית מאתגרות ומלאות תובנות עבור מועמד המתמודד על תפקיד זה אל תוסיף שום מילים שאנן קשורות לתוכן השאלות  
-  עצב את התגובה שלך כרשימה ממוספרת
-  `;
+//     const prompt = `
+//   אתה מראיין מנוסה לתפקיד של ${jobTitle}.
+//     ספק לי 5 שאלות ראיון בעברית מאתגרות ומלאות תובנות עבור מועמד המתמודד על תפקיד זה אל תוסיף שום מילים שאנן קשורות לתוכן השאלות  
+//   עצב את התגובה שלך כרשימה ממוספרת
+//   `;
+  const prompt = `You are an experienced interviewer for the position of ${jobTitle}.
+  Provide me with 5 challenging and insightful interview questions in English for a candidate applying for this position. Do not add any words that are unrelated to the content of the questions.
+  Format your response as a numbered list.`;
 
     try {
         const result = await model.generateContent(prompt);

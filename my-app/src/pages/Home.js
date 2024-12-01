@@ -203,7 +203,7 @@ function Home() {
       await createAnswer(userAnswer, questionId);
     }
 
-    const prompt = `השאלה: ${questions[currentQuestionIndex]}. התשובה שלך: ${userAnswer}. תן את חוות דעתך על התשובה האם היא נכונה ומה צריך לשפר בה תשתדל שתשובתך תהיה באורך 5 שורות מקסימום`;
+    const prompt = `The question: ${questions[currentQuestionIndex]}. your answer: ${userAnswer}. Give your opinion on the answer, whether it is correct and what needs to be improved. Try to keep your answer to a maximum of 5 lines in length.`;
     try {
       const response = await axios.post('http://localhost:3001/feedback/getFeedback', { prompt });
       setFeedback(response.data.feedback);
@@ -220,7 +220,7 @@ function Home() {
 
   const handleFinishInterview = async () => {
     setLoading(true);
-    const overallFeedbackPrompt = `הנה כל המשובים על תשובות המועמד: \n${allFeedbacks.join("\n")}\nבהתבסס על המשובים, תן לי משוב כללי על הראיון.`;
+    const overallFeedbackPrompt = `Here are all the feedbacks to the candidate's answers: \n${allFeedbacks.join("\n")}\nBased on the feedbacks, give me general feedback on the interview..`;
     try {
       const response = await axios.post('http://localhost:3001/feedback/getFeedback', { prompt: overallFeedbackPrompt });
       setFeedback(response.data.feedback);
@@ -249,14 +249,14 @@ function Home() {
 
 
   return (
-    <div className="job-div" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
+    <div className="job-div" >
       <NavBar />
 
       {/* Only show job selection if no questions are loaded */}
       {!questions.length && (
-        <form onSubmit={handleGenerateQuestions} style={{ marginBottom: '20px' }}>
+        <form className='firstform' onSubmit={handleGenerateQuestions}>
           <label>
-            <h1>:בחר תפקיד</h1>
+            <h1>:Choose a profession</h1>
             <select
               // value={jobTitle}
               value={jobId}
@@ -277,48 +277,52 @@ function Home() {
               ))}
             </select>
           </label>
-          <button type="submit" style={{ marginLeft: '10px', padding: '5px 10px' }} disabled={loading}>
-            {loading ? 'טוען...' : 'בקש שאלות'}
+          <button type="submit"  disabled={loading}>
+            {loading ? 'Loding...' : 'Generate Questions'}
           </button>
         </form>
       )}
 
       {/* Display questions and answer form */}
+      
       {questions.length > 0 && currentQuestionIndex < questions.length ? (
-        <div>
-          <h1>{jobTitle} ראיון הכנה בנושא </h1>
-          <h2>שאלה {currentQuestionIndex + 1} מתוך {questions.length}</h2>
-          <p>{questions[currentQuestionIndex]}</p>
-          <form onSubmit={handleSubmitAnswer} style={{ marginTop: '10px' }}>
+        <div className='allTest'> 
+        <div className="chat-container">
+          <h2>{jobTitle} Interview preparation</h2>
+          <h3>question {currentQuestionIndex + 1} / {questions.length}</h3>
+          <div className="question">
+          <p className=''>{questions[currentQuestionIndex]}</p>
+          </div>
+          <form className='answerForm' onSubmit={handleSubmitAnswer} >
             <textarea
               name="answer"
-              placeholder="כתוב את התשובה שלך כאן..."
+              placeholder="Write your answer here..."
               style={{ width: '100%', height: '100px', padding: '10px', marginBottom: '10px' }}
               disabled={loading}
             ></textarea>
             <button type="submit" style={{ padding: '5px 20px' }} disabled={loading}>
-              {loading ? 'טוען...' : 'שלח תשובה'}
+              {loading ? 'Loading..' : 'Send answer'}
             </button>
           </form>
           {feedback && (
-            <div style={{ marginTop: '10px', padding: '10px', backgroundColor: '#f0f8ff', borderRadius: '5px' }}>
-              <strong>:משוב</strong>
-              <p>{feedback}</p>
+            <div className="answer">
+              <strong>feedback</strong>
+              <p className='feedback'>{feedback}</p>
             </div>
           )}
         </div>
+        </div>
       ) : questions.length > 0 && currentQuestionIndex === questions.length ? (
-        <div>
-          <p>!סיימת את כל השאלות! כל הכבוד</p>
+        <div className='finish'>
+          <p className='wellDone'>You have completed all the questions! Well done!</p>
           {!buttonClicked && ( // אם הכפתור לא נלחץ, תציג אותו
             <button onClick={handleButtonClick} style={{ padding: '5px 20px', marginTop: '10px' }}>
-              קבל משוב כללי על הראיון
-            </button>
+              Get general feedback on the interview            </button>
           )}
-          <button onClick={handleRestartInterview} style={{ padding: '5px 20px', marginTop: '10px', marginLeft: '10px' }}>
-            בחר ראיון נוסף
+          <button onClick={handleRestartInterview} >
+          Start a new interview
           </button>
-          {showFinalFeedback && (<p>{feedback}</p>)}
+          {showFinalFeedback && (<p className='generalFeedback'>{feedback}</p>)}
         </div>
       ) : null}
 

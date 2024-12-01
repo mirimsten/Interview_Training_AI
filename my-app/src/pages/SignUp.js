@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import "../css/SignUp.css"
+
 const SignUp = () => {
   const [username, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,7 +21,7 @@ const SignUp = () => {
 
       if (response.status === 201) {
         const user = response.data.user;
-        alert('הרשמה בוצעה בהצלחה!');
+        //alert('הרשמה בוצעה בהצלחה!');
         setUserName('');
         setEmail('');
         setPassword('');
@@ -40,10 +41,12 @@ const SignUp = () => {
   };
 
   return (
-    <div id="form">
-      <h1>הרשמה</h1>
-      <form onSubmit={handleSubmit}>
-        <label>שם משתמש:</label>
+    <div className="form-container">
+      <form className='signupform' onSubmit={handleSubmit}>
+
+        <h1>Sign up</h1>
+
+        <label>Username:</label>
         <input
           type="text"
           placeholder="הכנס שם משתמש"
@@ -51,7 +54,7 @@ const SignUp = () => {
           onChange={(e) => setUserName(e.target.value)}
           required
         />
-        <label>אימייל:</label>
+        <label>Email:</label>
         <input
           type="email"
           placeholder="הכנס כתובת אימייל"
@@ -59,7 +62,7 @@ const SignUp = () => {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <label>סיסמה:</label>
+        <label>Password</label>
         <input
           type="password"
           placeholder="הכנס סיסמה"
@@ -67,8 +70,8 @@ const SignUp = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">הרשם</button>
-        <p>
+        <button type="submit">sign</button>
+        <p className='signlogin'>
           כבר קיים אצלנו? <a href="/login">התחבר</a>
         </p>
       </form>

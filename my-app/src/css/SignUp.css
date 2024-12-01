@@ -1,116 +1,130 @@
 body {
-    direction: rtl;
-    /* שינוי כיוון הטקסט מימין לשמאל */
-    text-align: right;
-    /* הצגת הטקסט מימין */
-}
-
-html {
-    min-width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
-        url('../images/background-image.jpg');
-    /* שילוב צבע שקוף עם תמונה */
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
+    /* direction: rtl;
+    text-align: right; */
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    overflow: hidden;
-
 }
 
-
-
-#form {
-    margin: 0;
-    /* מסיר מרווחים אנכיים */
-    padding: 40px;
-    min-width: 300px;
-    max-width: 600px;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
-    text-align: center;
-    margin-top: 100px;
-    background: #ffffffc2;
-    padding: 40px;
-    min-width: 300px;
-    max-width: 1000px;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
-    /* טקסט במרכז */
-}
-
-
-/* כפתורי ההרשמה */
-button {
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     width: 100%;
-    height: 60px;
-    background-color: #4728a7;
-    color: #EDF6F9;
-    font-weight: 200;
-    font-size: 1.5rem;
-    margin: 10px 0;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
 }
 
-button:hover {
-    background-color: #EDF6F9;
-    color: #006D77;
-}
-
-/* כותרות */
-h1,
-h2 {
-    font-family: 'Quicksand';
-    text-align: center;
-    color: #006D77;
-    font-weight: 600;
-    margin-bottom: 20px;
+.signupform {
+    color: #d4d4d4; /* צבע טקסט בהיר */
+    /* width: 50%; */
+    padding: 20px;
+    max-width: 800px;
+    background-color: #1e1e1e; /* צבע כהה כמו VSCode */
+    border-radius: 8px; /* פינות מעוגלות */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    font-family: 'Courier New', Courier, monospace; /* פונט מונוספייס */
+    line-height: 1.5; /* ריווח שורות */
+    overflow: hidden;
     text-align: center;
 }
 
+html{
+    min-width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),
+        url('../images/background-image1.jpg');
+
+    background-attachment: fixed;
+    background-position: center;
+    background-size:cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+/* עיצוב הכותרת */
+h1 {
+    color: #569cd6; /* צבע כחול כמו ב-VSCode */
+    text-align: left;
+    font-size: 1.8rem;
+}
+label {
+    font-size: 14px;
+    margin-bottom: 5px; 
+    color: #FFFFFF; 
+    display: block;
+} 
 /* שדות הטקסט */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-    text-align: left;
-    font-size: 1rem;
-    display: block;
-    width: 100%;
-    height: 50px;
-    padding: 5px 10px;
-    margin-bottom: 15px;
-    background: none;
-    border: 1px solid rgb(77 185 201 / 28%);
-    color: #343131;
+    width: 90%;
+    background-color: #252526; /* רקע כהה */
+    border: 1px solid #3c3c3c; /* מסגרת כהה */
+    color: #d4d4d4; /* צבע טקסט */
     border-radius: 4px;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 20px;
 }
 
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="password"]:focus {
-    border-color: #006D77;
+    border-color: #569cd6; /* צבע כחול כמו ב-VSCode */
     outline: none;
+    box-shadow: 0 0 5px #569cd6;
 }
 
-/* קישורים */
+/* כפתור ההרשמה */
+button {
+    background-color: #0e639c; /* צבע כחול כמו כפתור ב-VSCode */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+button:hover {
+    background-color: #1177bb;
+}
+
+/* עיצוב קישורים */
 a {
-    color: #83C5BE;
+    color: #9cdcfe; /* כחול בהיר */
     text-decoration: none;
 }
 
 a:hover {
-    color: #006D77;
     text-decoration: underline;
 }
+
+p {
+    color: white  /* השתמש ב- !important כדי להחיל את הצבע */
+}
+
+.signlogin {
+    color: white !important
+}   
+
+
+/* הדמיית קוד */
+/* pre {
+    background-color: #1e1e1e; 
+    padding: 10px;
+    border: 1px solid #3c3c3c;
+    border-radius: 4px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #d4d4d4; 
+    overflow-x: auto;
+} */
 
 /* עיצוב העיגול המתגלגל */
 .loading-overlay {

@@ -20,7 +20,7 @@ const Login = () => {
       const data = response.data;
 
       if (response.status === 200) {
-        alert('התחברת בהצלחה!');
+        //alert('התחברת בהצלחה!');
         const userData = {
           id: data.user.user_id,
           username: data.user.username,
@@ -43,9 +43,10 @@ const Login = () => {
   };
 
   return (
-    <div id="form">
+    <div className="form-container">
+    <form className='signupform' onSubmit={handleSubmit}>
       <h1>כניסה</h1>
-      <form onSubmit={handleSubmit}>
+      
         <label>אימייל:</label>
         <input
           type="email"
@@ -63,10 +64,11 @@ const Login = () => {
           required
         />
         <button type="submit">התחבר</button>
-      </form>
-      <p>
+      
+      <p className='signlogin'>
         אין לך חשבון? <a href="/signup">צור חשבון חדש</a>
       </p>
+      </form>
     </div>
   );
 };

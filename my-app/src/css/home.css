@@ -1,40 +1,161 @@
-.job-div{
-    width: 700px;
-    margin: 0;
-    /* מסיר מרווחים אנכיים */
-    padding: 40px;
-    min-width: 300px;
-    max-width: 600px;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
-    text-align: center;
-    margin-top: 100px;
-    background:#ffffffc2;
-    padding: 40px;
-    min-width: 300px;
-    max-width: 1000px;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
-    /* טקסט במרכז */
+
+.job-div {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    margin-top: 20px;
 }
+.finish{
+    display: flex;
+    flex-direction: column; 
+    /* gap: 20px;  */
+    justify-content: center; 
+    align-items: center;
+    background-color: #ffffffc2; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    width: 90%; 
+    border-radius: 10px; 
+}
+
+ .firstform{
+    font-family: 'Courier New', Courier, monospace; 
+    background-color: #ffffffc2; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    width: 150%; 
+    padding: 30px; 
+    margin: auto; 
+    border-radius: 10px; 
+    display: flex;
+    flex-direction: column; 
+    gap: 20px; 
+    justify-content: center; 
+    align-items: center;
+} 
+h1{
+    color: #367e96;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+
+}
+.answerForm {
+    /* padding: 20px; */
+    border-radius: 8px;
+    text-align: center; 
+    /* min-width: 300px; */
+    /* max-width: 500px; */
+    width: 100%;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    display: flex; 
+    flex-direction: column; 
+    height: 50%;
+    gap: 20px;
+}
+
+button {
+    /* margin-top: 20px; */
+    padding: 10px 20px;
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 20px; 
+  }
+
+  h2 {
+    margin-top: 10px;
+    margin-bottom: 20px; 
+    text-align: center;
+    color: #42757d;
+    width: 100%;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    max-width: 100%;
+}
+
+
+.question {
+    align-self: center;
+    margin-left: 10px;
+    /* background-color: #3c5664;  */
+    
+    max-width: 150%;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace; /* פונט מונוספייס */
+
+  }
+.generalFeedback{
+    background-color: #3c5664; 
+    font-family: 'Courier New', Courier, monospace; /* פונט מונוספייס */
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 80%;
+    color: #ffffff;
+}
+  
+  .answer {
+    align-self: center;
+    font-family: 'Courier New', Courier, monospace;
+    /* background-color: #3c5664;  */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+    border: 1px solid #31626f;
+
+    border-radius: 10px;
+    padding: 10px;
+    /* margin-bottom: 100px; */
+  }
+ 
+
+  
+  .allTest {
+    height: 600px;
+    background-color: #ffffffc2;
+    margin-top: 50px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 300px;
+    width: 80%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    /* min-height: 200px;  */
+    position:absolute;
+    padding: 10px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+
+textarea {
+    width: 100%;
+    color: #31626f;
+    /* padding: 10px; */
+    border-radius: 10px;
+    border: 1px solid #31626f;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+
+    /* background-color: #2f393e;      */
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace; /* פונט מונוספייס */
+
+  }
 .PreviousInervies{
-    width: 700px;
+    width: 900px;
     margin: 0;
-    /* מסיר מרווחים אנכיים */
     padding: 40px;
     min-width: 300px;
-    max-width: 600px;
+    max-width: 900px;
     border-radius: 4px;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
+
     text-align: center;
-    margin-top: 100px;
+    /* margin-top: 100px; */
     background: #ffffffc2;
     padding: 40px;
     min-width: 300px;
     max-width: 1000px;
     border-radius: 4px;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.6);
-    overflow-y: auto;  /* מאפשר גלילה אנכית אם התוכן חורג */
+    overflow-y: auto;  
     max-height: 70vh; 
 }
 li {
@@ -47,6 +168,8 @@ li {
     text-align: center;
     display: inline-block; /* זה גורם לאלמנט להסתגל לגודל התוכן */
     margin: 10px; /* אם רוצים להוסיף מרווח בין הפריטים */
+    justify-content: center;
+    align-items: center;
 }
 
 ul {
@@ -59,12 +182,21 @@ ul {
 
 
 h3 {
-    color: #006D77;
+    color: #276373;
     font-weight: 600;
+    /* margin-right: 460px; */
+    font-family: 'Courier New', Courier, monospace; /* פונט מונוספייס */
+
 }
 
 p {
     color: #343131;
+    font-family: 'Courier New', Courier, monospace; /* פונט מונוספייס */
+}
+.wellDone{
+    font-size:xx-large;
+    color: #006D77;
+
 }
 .backButton{
     width: unset;

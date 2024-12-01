@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../css/home.css'
 
 const PreviousInterviews = () => {
     const [interviews, setInterviews] = useState([]); // אחסון הראיונות
@@ -69,20 +70,19 @@ const PreviousInterviews = () => {
 
     return (
         <div className='PreviousInervies'>
-            <button className='backButton' onClick={handleGoBack}>חזור אחורה</button>
-            <h1>ראיונות קודמים</h1>
+            <button className='backButton' onClick={handleGoBack}>Back </button>
+            <h1>Previous interviews</h1>
             {interviews.length === 0 ? (
-                <p>אין ראיונות קודמים להצגה.</p>
-            ) : (
+                <p>There are no previous interviews</p>            ) : (
                 <ul>
                     {interviews.map((interview) => (
                         <li key={interview.interviewId}>
                             <h3>
-                                תפקיד:{" "}
-                                {skills[interview.skill_id] || "טוען..."}
+                            profession:{" "}
+                                {skills[interview.skill_id] || "Loading.."}
                             </h3>
-                            <p>תאריך: {new Date(interview.interview_date).toLocaleDateString()}</p>
-                            <p>משוב: {interview.feedback || "אין משוב"}</p>
+                            <p >date: {new Date(interview.interview_date).toLocaleDateString()}</p>
+                            <p>feedback: {interview.feedback || "there is no feedback"}</p>
                         </li>
                     ))}
                 </ul>
